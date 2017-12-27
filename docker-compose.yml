@@ -1,0 +1,24 @@
+version: "3.3"
+services:
+  k8s-etcd:
+    image: gcr.io/google_containers/etcd:3.1.10
+    command: etcd --data-dir /var/lib/data
+    networks:
+      - k8s-manager
+    ports:
+      - "8080:8080"
+    volumes:
+      - k8s-etcd:/var/lib/data
+  k8s-apiserver:
+    image: gcr.io/google_containers/hyperkube:v1.7.6
+    command: /apiserver
+      --etcd-servers=http://127.0.0.1:2379​ ​\
+      --service-cluster-ip-range=10.0.0.1/24​ ​\
+      --insecure-bind-address=0.0.0.0​ ​\
+      --insecure-port=8080​ ​\
+      --admission-control=AlwaysAdmit
+    networks:
+      - container:k8s-etcd
+
+volumes:
+  k8s-etcd:
