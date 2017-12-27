@@ -35,8 +35,8 @@ Vagrant.configure(2) do |config|
       sudo ./install_docker.sh
       sudo ./install_k8s.sh
       sudo ./init_cluster.sh
-      sudo cp -r /root/.kube ~/.kube
-      sudo chown -R ubuntu:ubuntu ~/.kube
+      sudo cp -r /root/.kube /home/ubuntu/.kube
+      sudo chown -R ubuntu:ubuntu /home/ubuntu/.kube
     SHELL
   end
   config.vm.define "minion-1" do |minion|
