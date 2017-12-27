@@ -6,7 +6,9 @@ Vagrant.configure(2) do |config|
     # Set the timesync threshold to 10 seconds, instead of the default 20 minutes.
     v.customize ["guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 10000]
   end
+  config.hostsupdater.remove_on_suspend = false
 
+  config.ssh.shell="bash"
   config.vm.define "manager" do |manager|
     config.vm.provider :virtualbox do |vb|
        vb.customize ["modifyvm", :id, "--memory", "2048"]
@@ -15,10 +17,15 @@ Vagrant.configure(2) do |config|
     end
     manager.vm.box = "ubuntu/xenial64"
     manager.vm.network "private_network", ip: "172.28.128.60"
-    manager.vm.hostname = "k8s.local"
-    # manager.hostsupdater.aliases = ["ucp.local", "dtr.local"]
+    manager.vm.network "forwarded_port", guest: 6443, host: 6443
+    manager.vm.hostname = "k8s.landrush"
+    # manager.hostsupdater.aliases = ["ucp.landrush", "dtr.landrush"]
     manager.landrush.enabled = true
-    manager.landrush.tld = 'local'
+    manager.landrush.tld = 'landrush'
+    manager.landrush.host 'manager', '172.28.128.60'
+    manager.landrush.host 'minion-1', '172.28.128.61'
+    manager.landrush.host 'minion-2', '172.28.128.62'
+    manager.landrush.host 'minion-3', '172.28.128.63'
     manager.vm.provision "shell", inline: <<-SHELL
       sudo cp /vagrant/common.sh .
       sudo cp /vagrant/install_docker.sh .
@@ -32,10 +39,6 @@ Vagrant.configure(2) do |config|
       sudo ./install_docker.sh
       sudo ./install_k8s.sh
       sudo ./init_cluster.sh
-
-      mkdir -p $HOME/.kube
-      sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-      sudo chown $(id -u):$(id -g) $HOME/.kube/config
     SHELL
   end
   config.vm.define "minion-1" do |minion|
@@ -46,9 +49,14 @@ Vagrant.configure(2) do |config|
     end
     minion.vm.box = "ubuntu/xenial64"
     minion.vm.network "private_network", ip: "172.28.128.61"
-    # minion.hostsupdater.aliases = ["ucp.local", "dtr.local"]
+    minion.vm.hostname = "minion-1.landrush"
+    # minion.hostsupdater.aliases = ["ucp.landrush", "dtr.landrush"]
     minion.landrush.enabled = true
-    minion.landrush.tld = 'local'
+    minion.landrush.tld = 'landrush'
+    minion.landrush.host 'manager', '172.28.128.60'
+    minion.landrush.host 'minion-1', '172.28.128.61'
+    minion.landrush.host 'minion-2', '172.28.128.62'
+    minion.landrush.host 'minion-3', '172.28.128.63'
     minion.vm.provision "shell", inline: <<-SHELL
       sudo cp /vagrant/common.sh .
       sudo cp /vagrant/install_docker.sh .
@@ -62,9 +70,6 @@ Vagrant.configure(2) do |config|
       sudo ./install_docker.sh
       sudo ./install_k8s.sh
       sudo ./join_cluster.sh
-      mkdir -p $HOME/.kube
-      sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-      sudo chown $(id -u):$(id -g) $HOME/.kube/config
     SHELL
   end
   config.vm.define "minion-2" do |minion|
@@ -75,9 +80,14 @@ Vagrant.configure(2) do |config|
     end
     minion.vm.box = "ubuntu/xenial64"
     minion.vm.network "private_network", ip: "172.28.128.62"
-    # minion.hostsupdater.aliases = ["ucp.local", "dtr.local"]
+    minion.vm.hostname = "minion-2.landrush"
+    # minion.hostsupdater.aliases = ["ucp.landrush", "dtr.landrush"]
     minion.landrush.enabled = true
-    minion.landrush.tld = 'local'
+    minion.landrush.tld = 'landrush'
+    minion.landrush.host 'manager', '172.28.128.60'
+    minion.landrush.host 'minion-1', '172.28.128.61'
+    minion.landrush.host 'minion-2', '172.28.128.62'
+    minion.landrush.host 'minion-3', '172.28.128.63'
     minion.vm.provision "shell", inline: <<-SHELL
       sudo cp /vagrant/common.sh .
       sudo cp /vagrant/install_docker.sh .
@@ -91,9 +101,6 @@ Vagrant.configure(2) do |config|
       sudo ./install_docker.sh
       sudo ./install_k8s.sh
       sudo ./join_cluster.sh
-      mkdir -p $HOME/.kube
-      sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-      sudo chown $(id -u):$(id -g) $HOME/.kube/config
     SHELL
   end
   config.vm.define "minion-3" do |minion|
@@ -104,9 +111,14 @@ Vagrant.configure(2) do |config|
     end
     minion.vm.box = "ubuntu/xenial64"
     minion.vm.network "private_network", ip: "172.28.128.63"
-    # minion.hostsupdater.aliases = ["ucp.local", "dtr.local"]
+    minion.vm.hostname = "minion-3.landrush"
+    # minion.hostsupdater.aliases = ["ucp.landrush", "dtr.landrush"]
     minion.landrush.enabled = true
-    minion.landrush.tld = 'local'
+    minion.landrush.tld = 'landrush'
+    minion.landrush.host 'manager', '172.28.128.60'
+    minion.landrush.host 'minion-1', '172.28.128.61'
+    minion.landrush.host 'minion-2', '172.28.128.62'
+    minion.landrush.host 'minion-3', '172.28.128.63'
     minion.vm.provision "shell", inline: <<-SHELL
       sudo cp /vagrant/common.sh .
       sudo cp /vagrant/install_docker.sh .
@@ -120,9 +132,6 @@ Vagrant.configure(2) do |config|
       sudo ./install_docker.sh
       sudo ./install_k8s.sh
       sudo ./join_cluster.sh
-      mkdir -p $HOME/.kube
-      sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-      sudo chown $(id -u):$(id -g) $HOME/.kube/config
     SHELL
   end
 end
