@@ -22,10 +22,6 @@ Vagrant.configure(2) do |config|
     # manager.hostsupdater.aliases = ["ucp.landrush", "dtr.landrush"]
     manager.landrush.enabled = true
     manager.landrush.tld = 'landrush'
-    manager.landrush.host 'manager', '172.28.128.60'
-    manager.landrush.host 'minion-1', '172.28.128.61'
-    manager.landrush.host 'minion-2', '172.28.128.62'
-    manager.landrush.host 'minion-3', '172.28.128.63'
     manager.vm.provision "shell", inline: <<-SHELL
       sudo cp /vagrant/common.sh .
       sudo cp /vagrant/install_docker.sh .
@@ -55,10 +51,6 @@ Vagrant.configure(2) do |config|
     # minion.hostsupdater.aliases = ["ucp.landrush", "dtr.landrush"]
     minion.landrush.enabled = true
     minion.landrush.tld = 'landrush'
-    minion.landrush.host 'manager', '172.28.128.60'
-    minion.landrush.host 'minion-1', '172.28.128.61'
-    minion.landrush.host 'minion-2', '172.28.128.62'
-    minion.landrush.host 'minion-3', '172.28.128.63'
     minion.vm.provision "shell", inline: <<-SHELL
       sudo cp /vagrant/common.sh .
       sudo cp /vagrant/install_docker.sh .
@@ -86,10 +78,6 @@ Vagrant.configure(2) do |config|
     # minion.hostsupdater.aliases = ["ucp.landrush", "dtr.landrush"]
     minion.landrush.enabled = true
     minion.landrush.tld = 'landrush'
-    minion.landrush.host 'manager', '172.28.128.60'
-    minion.landrush.host 'minion-1', '172.28.128.61'
-    minion.landrush.host 'minion-2', '172.28.128.62'
-    minion.landrush.host 'minion-3', '172.28.128.63'
     minion.vm.provision "shell", inline: <<-SHELL
       sudo cp /vagrant/common.sh .
       sudo cp /vagrant/install_docker.sh .
@@ -117,10 +105,6 @@ Vagrant.configure(2) do |config|
     # minion.hostsupdater.aliases = ["ucp.landrush", "dtr.landrush"]
     minion.landrush.enabled = true
     minion.landrush.tld = 'landrush'
-    minion.landrush.host 'manager', '172.28.128.60'
-    minion.landrush.host 'minion-1', '172.28.128.61'
-    minion.landrush.host 'minion-2', '172.28.128.62'
-    minion.landrush.host 'minion-3', '172.28.128.63'
     minion.vm.provision "shell", inline: <<-SHELL
       sudo cp /vagrant/common.sh .
       sudo cp /vagrant/install_docker.sh .
