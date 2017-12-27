@@ -1,0 +1,6 @@
+join_token
+manager_ip
+.vagrant/*
+*.swp
+*.log
+*.glue
